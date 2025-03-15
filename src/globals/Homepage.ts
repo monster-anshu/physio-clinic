@@ -1,7 +1,7 @@
 import { Block, GlobalConfig } from "payload";
 
 const HeroGlobal: Block = {
-  slug: "homepage-hero",
+  slug: "hero-block",
   fields: [
     {
       type: "text",
@@ -24,13 +24,34 @@ const HeroGlobal: Block = {
   ],
 };
 
+const TestimonialBlock: Block = {
+  slug: "testimonial-block",
+  fields: [
+    {
+      type: "text",
+      name: "title",
+    },
+    {
+      type: "text",
+      name: "subtitle",
+    },
+    {
+      type: "relationship",
+      name: "testimonials",
+      relationTo: "testimonials",
+      hasMany: true,
+    },
+  ],
+};
+
 export const Homepage: GlobalConfig = {
   slug: "homepage",
+
   fields: [
     {
       type: "blocks",
-      name: "hero",
-      blocks: [HeroGlobal],
+      name: "blocks",
+      blocks: [HeroGlobal, TestimonialBlock],
     },
   ],
 };

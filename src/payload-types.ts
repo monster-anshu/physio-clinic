@@ -68,6 +68,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    testimonials: Testimonial;
     "payload-locked-documents": PayloadLockedDocument;
     "payload-preferences": PayloadPreference;
     "payload-migrations": PayloadMigration;
@@ -76,6 +77,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     "payload-locked-documents":
       | PayloadLockedDocumentsSelect<false>
       | PayloadLockedDocumentsSelect<true>;
@@ -161,6 +163,23 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  name: string;
+  content: string;
+  diagnosis: string;
+  picture?: (number | null) | Media;
+  age?: number | null;
+  occupation?: string | null;
+  address?: string | null;
+  rating?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -173,6 +192,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: "media";
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: "testimonials";
+        value: number | Testimonial;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -252,6 +275,22 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  name?: T;
+  content?: T;
+  diagnosis?: T;
+  picture?: T;
+  age?: T;
+  occupation?: T;
+  address?: T;
+  rating?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -288,16 +327,26 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Homepage {
   id: number;
-  hero?:
-    | {
-        title?: string | null;
-        subtitle?: string | null;
-        cta?: string | null;
-        image?: (number | null) | Media;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: "homepage-hero";
-      }[]
+  blocks?:
+    | (
+        | {
+            title?: string | null;
+            subtitle?: string | null;
+            cta?: string | null;
+            image?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: "hero-block";
+          }
+        | {
+            title?: string | null;
+            subtitle?: string | null;
+            testimonials?: (number | Testimonial)[] | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: "testimonial-block";
+          }
+      )[]
     | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -307,16 +356,25 @@ export interface Homepage {
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
-  hero?:
+  blocks?:
     | T
     | {
-        "homepage-hero"?:
+        "hero-block"?:
           | T
           | {
               title?: T;
               subtitle?: T;
               cta?: T;
               image?: T;
+              id?: T;
+              blockName?: T;
+            };
+        "testimonial-block"?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              testimonials?: T;
               id?: T;
               blockName?: T;
             };
