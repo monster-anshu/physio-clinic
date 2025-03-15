@@ -2,11 +2,13 @@
   "name": "physio-clinic",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
     "format": "prettier -w .",
     "lint": "next lint",
+    "payload": "payload",
     "prepare": "husky",
     "start": "next start"
   },
