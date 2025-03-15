@@ -16,6 +16,11 @@ const HeroGlobal: Block = {
       label: "Click to action",
       name: "cta",
     },
+    {
+      name: "image",
+      type: "upload",
+      relationTo: "media",
+    },
   ],
 };
 
